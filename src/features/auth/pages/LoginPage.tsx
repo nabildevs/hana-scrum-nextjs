@@ -17,7 +17,7 @@ import { RegisterFormInner } from '../components/RegisterFormInner';
 import { api } from '@/utils/api';
 import { toast } from 'sonner';
 
-const RegisterPage = () => {
+const LoginPage = () => {
 	const form = useForm<RegisterFormSchema>({
 		resolver: zodResolver(registerFormSchema),
 	});
@@ -55,18 +55,18 @@ const RegisterPage = () => {
 					{/* Logo */}
 					<CardHeader className="flex flex-col items-center text-center">
 						<h1 className="text-primary text-3xl font-bold">
-							Create Account
+							Welcome Back
 						</h1>
 						<p className="text-muted-foreground">
-							Start to manage your projects now
+							Log in to your account now
 						</p>
 					</CardHeader>
 					<CardContent className="mt-4">
 						<Form {...form}>
 							<RegisterFormInner
+								buttonText="Log In"
 								isLoading={registerUserIsPending}
 								onRegisterSubmit={handleRegisterSubmit}
-								showPassword
 							/>
 						</Form>
 					</CardContent>
@@ -85,16 +85,16 @@ const RegisterPage = () => {
 							className="mt-4.5 w-full"
 						>
 							<FcGoogle />
-							Continue With Google
+							Log In With Google
 						</Button>
 
 						<p className="text-muted-foreground mt-4">
-							Already have an account?{' '}
+							Do not have an account?{' '}
 							<Link
 								className="font-bold text-blue-600 hover:text-blue-500 hover:underline"
-								href="/login"
+								href="/register"
 							>
-								Log In
+								Register
 							</Link>
 						</p>
 					</CardFooter>
@@ -104,4 +104,4 @@ const RegisterPage = () => {
 	);
 };
 
-export default RegisterPage;
+export default LoginPage;
