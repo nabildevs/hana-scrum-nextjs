@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-export const fullNameSchema = z.string({ message: 'Full Name is required' });
 export const emailSchema = z
 	.string({ message: 'Email is required' })
 	.email({ message: 'Email is not valid' });

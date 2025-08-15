@@ -16,6 +16,7 @@ import { useState } from 'react';
 
 type RegisterFormInnerProps = {
 	onRegisterSubmit: (values: RegisterFormSchema) => void;
+	isLoading: boolean;
 };
 
 export const RegisterFormInner = (props: RegisterFormInnerProps) => {
@@ -26,22 +27,8 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
 	return (
 		<form
 			onSubmit={form.handleSubmit(props.onRegisterSubmit)}
-			className="flex flex-col gap-y-4"
+			className="flex flex-col gap-y-3"
 		>
-			<FormField
-				control={form.control}
-				name="full_name"
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>Full Name</FormLabel>
-						<FormControl>
-							<Input {...field} />
-						</FormControl>
-						<FormDescription />
-						<FormMessage />
-					</FormItem>
-				)}
-			/>
 			<FormField
 				control={form.control}
 				name="email"
@@ -73,7 +60,7 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
 					</FormItem>
 				)}
 			/>
-			<Label className="justify-end">
+			<Label>
 				<Checkbox
 					checked={showPassword}
 					onCheckedChange={(checked) => setShowPassword(!!checked)}
@@ -81,7 +68,11 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
 				Show Password
 			</Label>
 
-			<Button size="lg" className="mt-4 w-full">
+			<Button
+				disabled={props.isLoading}
+				size="lg"
+				className="mt-2 w-full"
+			>
 				Create Account
 			</Button>
 		</form>
