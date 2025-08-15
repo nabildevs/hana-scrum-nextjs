@@ -14,37 +14,63 @@ import { registerFormSchema, type RegisterFormSchema } from '../forms/register';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { RegisterFormInner } from '../components/RegisterFormInner';
-import { api } from '@/utils/api';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase/client';
+import type { AuthError } from '@supabase/supabase-js';
+import { SupabaseAuthErrorCodes } from '@/lib/supabase/supabaseAuthErrorCodes';
+import { useRouter } from 'next/router';
 
 const LoginPage = () => {
 	const form = useForm<RegisterFormSchema>({
 		resolver: zodResolver(registerFormSchema),
 	});
 
-	const { mutate: registerUser, isPending: registerUserIsPending } =
-		api.auth.register.useMutation({
-			onSuccess: () => {
-				toast.success('Account created successfully!');
-				form.setValue('email', '');
-				form.setValue('password', '');
-			},
-			onError: () => {
-				toast.error(
-					'Failed to create an account, please try again later',
-				);
-			},
-		});
+	const router = useRouter();
 
-	const handleRegisterSubmit = (values: RegisterFormSchema) => {
-		registerUser(values);
+	const handleLoginSubmit = async (values: RegisterFormSchema) => {
+		try {
+			const { data, error } = await supabase.auth.signInWithPassword({
+				email: values.email,
+				password: values.password,
+			});
+
+			if (error) throw error;
+
+			toast.success('You are now logged in');
+			await router.replace('/');
+		} catch (error) {
+			// Supabase auth error
+			switch ((error as AuthError).code) {
+				case SupabaseAuthErrorCodes.invalid_credentials:
+					form.setError('email', {
+						message: 'Credentials is not correct',
+					});
+					form.setError('password', {
+						message: 'Credentials is not correct',
+					});
+
+					break;
+
+				case SupabaseAuthErrorCodes.email_not_confirmed:
+					form.setError('email', {
+						message: 'Email not verified',
+					});
+
+					break;
+
+				default:
+					toast.error(
+						'Something wrong happen, please try again later',
+					);
+			}
+		}
 	};
 
 	return (
 		<PageContainer
 			withFooter={false}
 			withHeader={false}
-			title="Register"
+			title="Login"
 			className="justify-center"
 		>
 			<SectionContainer
@@ -53,7 +79,7 @@ const LoginPage = () => {
 			>
 				<Card className="w-full max-w-md">
 					{/* Logo */}
-					<CardHeader className="flex flex-col items-center text-center">
+					<CardHeader className="flex flex-col items-center text-center leading-tight">
 						<h1 className="text-primary text-3xl font-bold">
 							Welcome Back
 						</h1>
@@ -65,8 +91,8 @@ const LoginPage = () => {
 						<Form {...form}>
 							<RegisterFormInner
 								buttonText="Log In"
-								isLoading={registerUserIsPending}
-								onRegisterSubmit={handleRegisterSubmit}
+								// isLoading={registerUserIsPending}
+								onRegisterSubmit={handleLoginSubmit}
 							/>
 						</Form>
 					</CardContent>

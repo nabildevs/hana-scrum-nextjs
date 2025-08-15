@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '@/server/api/trpc';
 import { emailSchema, passwordSchema } from '@/schemas/auth';
-import { supabaseAdminClient } from '@/lib/supabase/client';
+import { supabaseAdminClient } from '@/lib/supabase/server';
 import { generateFromEmail } from 'unique-username-generator';
 
 export const authRouter = createTRPCRouter({

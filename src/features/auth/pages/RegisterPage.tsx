@@ -53,7 +53,7 @@ const RegisterPage = () => {
 			>
 				<Card className="w-full max-w-md">
 					{/* Logo */}
-					<CardHeader className="flex flex-col items-center text-center">
+					<CardHeader className="flex flex-col items-center text-center leading-tight">
 						<h1 className="text-primary text-3xl font-bold">
 							Create Account
 						</h1>
