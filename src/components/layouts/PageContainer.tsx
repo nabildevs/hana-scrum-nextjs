@@ -26,7 +26,7 @@ export const PageContainer = forwardRef<
 		},
 		ref,
 	) => {
-		const pageTitle = title ? `${title} - ${appName}` : appName;
+		const pageTitle = title ? `${title} — ${appName}` : appName;
 
 		return (
 			<div className="bg-secondary flex min-h-screen flex-col">
@@ -50,8 +50,8 @@ export const PageContainer = forwardRef<
 				</main>
 
 				{withFooter && (
-					<footer className="text-muted-foreground flex min-h-16 items-center justify-center border-t p-4 text-sm">
-						© 2024 Fanattic. All rights reserved
+					<footer className="text-muted-foreground flex min-h-12 items-center justify-center border-t p-4 text-xs md:min-h-16 md:text-sm">
+						© 2024 Hanadev &mdash; All rights reserved
 					</footer>
 				)}
 			</div>

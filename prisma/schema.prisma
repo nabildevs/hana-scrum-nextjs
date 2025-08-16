@@ -24,4 +24,8 @@ model Profile {
     userId   String @id
     email    String @unique
     username String @unique
+
+    fullName       String?
+    bio            String?
+    profilePicture String?
 }
